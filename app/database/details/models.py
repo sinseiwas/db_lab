@@ -12,12 +12,11 @@ from sqlalchemy.orm import (
     relationship
 )
 
-from database import Base
+from database.database import Base
 # from app.database.workers.models import Worker
 # from app.database.operations.models import Operation
 
 
-metadata_obj = MetaData()
 
 
 class Detail(Base):

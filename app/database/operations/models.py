@@ -15,7 +15,6 @@ from app.database.workers.models import User
 from app.database.database import Base
 
 
-metadata_obj = MetaData()
 
 class Operation(Base):
     __tablename__ = "operations"

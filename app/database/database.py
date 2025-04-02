@@ -3,11 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import DeclarativeBase
 
 # import asyncio
-from app import config
-
-from app.database.details.models import metadata_obj as md_det
-from app.database.workers.models import metadata_obj as md_work
-from app.database.operations.models import metadata_obj as md_op
+import config
 
 
 engine = create_async_engine(
@@ -27,8 +23,5 @@ class Base(DeclarativeBase):
     pass
 
 async def init_db():
-    engine.echo = False
-    md_det.create_all(engine)
-    md_op.create_all(engine)
-    md_work.create_all(engine)
-    engine.echo = True
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)

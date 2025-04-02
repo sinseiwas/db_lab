@@ -13,7 +13,6 @@ from sqlalchemy import (
 from app.database.database import Base
 from app.database.details import Detail
 
-metadata_obj = MetaData()
 
 class Worker(Base):
     __tablename__ = "users"
