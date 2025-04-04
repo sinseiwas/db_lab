@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список деталей</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: auto; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Детали</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Наименование</th>
+                    <th>Размер</th>
+                    <th>Количество операций</th>
+                    <th>Дата начала</th>
+                    <th>Дата окончания</th>
+                </tr>
+            </thead>
+            <tbody id="detailsTableBody">
+                <tr><td colspan="6">Загрузка...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchDetails() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/detail'); // Запрос к API
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP: ${response.status}`);
+                }
+                const details = await response.json();
+                const tableBody = document.getElementById('detailsTableBody');
+                tableBody.innerHTML = ''; // Очищаем таблицу перед добавлением данных
+
+                if (details.error) {
+                    tableBody.innerHTML = `<tr><td colspan="6">${details.error}</td></tr>`;
+                    return;
+                }
+
+                details.forEach(detail => {
+                    const row = `<tr>
+                        <td>${detail.id}</td>
+                        <td>${detail.name}</td>
+                        <td>${detail.size}</td>
+                        <td>${detail.operation_amount}</td>
+                        <td>${detail.start_date}</td>
+                        <td>${detail.end_date}</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Ошибка при загрузке данных:', error);
+                const tableBody = document.getElementById('detailsTableBody');
+                tableBody.innerHTML = '<tr><td colspan="6">Ошибка загрузки данных</td></tr>';
+            }
+        }
+
+        // Вызываем функцию для загрузки данных при загрузке страницы
+        fetchDetails();
+    </script>
+</body>
+</html>

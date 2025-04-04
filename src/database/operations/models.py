@@ -8,11 +8,11 @@ from sqlalchemy import (
 from sqlalchemy.orm import (
     Mapped,
     mapped_column,
-    relationships
+    relationship
 )
 
-from app.database.workers.models import User
-from app.database.database import Base
+# from database.workers.models import Worker
+from database.database import Base
 
 
 
@@ -22,8 +22,8 @@ class Operation(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     p_p_number: Mapped[int] = mapped_column(Integer)
     type: Mapped[int] = mapped_column(Integer)
-    worker_rank: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    worker_rank: Mapped[int] = mapped_column(ForeignKey("workers.id"))
     description: Mapped[str] = mapped_column(String)
     time: Mapped[int] = mapped_column(Integer)
 
-    detail = relationships("Detail", back_populates="operations")
+    # detail = relationship("Detail", back_populates="operations")
